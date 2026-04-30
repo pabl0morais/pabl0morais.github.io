@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+<meta charset="UTF-8">
+<title>Pablo Júnio | Dev</title>
+
+<style>
+  /* CONFIGURAÇÕES GERAIS */
+  body {
+  overflow-x: hidden; /* Evita que a luz crie barra de rolagem */
+  background: radial-gradient(circle at center, #0a0a0a 0%, #000 100%);
+}
+
+.luz-neon {
+  position: fixed;
+  top: -150px;
+  left: -150px;
+  width: 500px;
+  height: 500px;
+  background: rgba(10, 48, 23, 0.927); /* Verde bem fraquinho */
+  filter: blur(120px); /* Deixa a luz esfumaçada */
+  border-radius: 50%;
+  z-index: -1; /* Fica atrás de tudo */
+  animation: moverLuz 20s infinite alternate ease-in-out;
+}
+
+@keyframes moverLuz {
+  from { transform: translate(0, 0); }
+  to { transform: translate(100vw, 100vh); }
+}
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth; /* Faz o deslize ser suave */
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background-color: #000; /* Fundo Preto */
+    color: #eee;
+    display: flex;
+  }
+
+  /* MENU LATERAL FIXO */
+  .sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: #080808;
+    border-right: 2px solid #00ff7f; /* Linha Verde Neon */
+    position: fixed;
+    padding-top: 40px;
+  }
+
+  .sidebar h2 {
+    color: #00ff7f;
+    text-align: center;
+    font-size: 1.4rem;
+    margin-bottom: 40px;
+    letter-spacing: 1px;
+  }
+
+  .sidebar ul {
+    list-style: none;
+  }
+
+  .sidebar ul li a {
+    display: block;
+    padding: 15px 25px;
+    color: #888;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s;
+  }
+
+  /* Efeito ao passar o mouse */
+  .sidebar ul li a:hover {
+    color: #00ff7f;
+    background-color: rgba(0, 255, 127, 0.05);
+    padding-left: 35px;
+  }
+
+  /* CONTEÚDO */
+  .main-content {
+    margin-left: 250px;
+    width: 100%;
+  }
+
+  section {
+    min-height: 100vh; /* Cada parte ocupa a tela toda */
+    padding: 100px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  h1, h2 {
+    color: #00ff7f;
+    margin-bottom: 20px;
+    font-size: 2.5rem;
+  }
+
+  p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    max-width: 700px;
+  }
+
+  /* Estilo para a lista de habilidades */
+  .tags {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .tag {
+    border: 1px solid #00ff7f;
+    padding: 5px 15px;
+    border-radius: 4px;
+    color: #00ff7f;
+    font-size: 0.9rem;
+  }
+
+  /* FOTO FLUTUANTE */
+  .minha-foto {
+    position: fixed;
+    right: 40px;
+    bottom: 40px;
+    width: 180px;
+    border: 2px solid #03df50;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 255, 127, 0.2);
+    animation: flutuar 3s infinite alternate ease-in-out;
+}
+
+/* O QUE A ANIMAÇÃO FAZ: flutua 15px para cima e brilha mais forte */
+@keyframes flutuar {
+    from {
+        transform: translateY(0);
+        box-shadow: 0 0 15px rgba(0, 255, 127, 0.2);
+    }
+    to {
+        transform: translateY(-15px);
+        box-shadow: 0 0 30px rgba(3, 223, 80, 0.6);
+    }
+}
+/* Cole este bloco no final do seu CSS atual */
+    .skills-grid {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .skill-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .skill-item i {
+      font-size: 50px;
+      transition: 0.3s;
+    }
+
+    .skill-item:hover i {
+      transform: scale(1.2);
+      filter: drop-shadow(0 0 10px #00ff7f);
+    }
+
+    .skill-item span {
+      font-size: 0.9rem;
+      color: #888;
+    }
+        footer { text-align: center; padding: 20px; color: #888; font-size: 0.8rem; }
+        .pablo { color: #03df50; font-weight: bold; }
+    </style>
+</style>
+</head>
+<body>
+<div class="luz-neon"></div>
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <h2>PABLO MORAIS</h2>
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Conteúdo -->
+  <div class="main-content">
+    
+    <section id="home">
+  <h1>Olá, eu sou o <span class="highlight">Pablo!</span></h1>
+  <p class="subtitle">
+    <strong>Desenvolvedor | Acadêmico de Téc. em Informática</strong>
+  </p>
+  <br>
+  <p>
+    Estudante de Informática no <strong>Colégio Técnico de Floriano (CTF/UFPI)</strong>, 
+    especializado na arquitetura de sistemas robustos e desenvolvimento de aplicações de alto nível.
+  </p>
+  <p>
+    Foco em transformar desafios lógicos em soluções reais através de linguagens como 
+    Python e Java, com domínio avançado em bancos de dados PostgreSQL.
+  </p>
+</section>
+
+    <section id="about">
+      <h2>Sobre Mim</h2>
+      <p>Desenvolvo sistemas funcionais com foco em organização e eficiência.</p>
+       <p>Curso o 3º ano do Ensino Médio.</p>
+        <p> Atualmente moro em Floriano, Piauí.</p>
+    </section>
+
+    <section id="skills">
+  <h2>Habilidades</h2>
+  <div class="skills-grid">
+    <!-- Python -->
+    <div class="skill-item">
+      <i class="devicon-python-plain colored"></i>
+      <span>Python</span>
+    </div>
+    <!-- Java -->
+    <div class="skill-item">
+      <i class="devicon-java-plain colored"></i>
+      <span>Java</span>
+    </div>
+    <!-- PostgreSQL -->
+    <div class="skill-item">
+      <i class="devicon-postgresql-plain colored"></i>
+      <span>PostgreSQL</span>
+    </div>
+    <!-- HTML5 -->
+    <div class="skill-item">
+      <i class="devicon-html5-plain colored"></i>
+      <span>HTML5</span>
+    </div>
+  
+  </div>
+</section>
+
+    <section id="work">
+     <h2>Projetos de Impacto</h2>
+      <div class="card">
+        <h3>Sistema de Gestão de Fluxo Institucional</h3>
+        <p>Desenvolvimento de um motor de reservas em tempo real para laboratórios acadêmicos, integrando bancos de dados relacionais.</p>
+      </div>
+    </section>
+
+    <section id="services">
+     <h2>Especialidades</h2>
+      <div class="card-grid">
+        <div class="card"><h3>Engenharia de Software</h3><p>Criação de sistemas escaláveis e robustos para empresas de tecnologia.</p></div>
+        <div class="card"><h3>Consultoria de Dados</h3><p>Modelagem e administração de bancos de dados PostgreSQL de alta disponibilidade.</p></div>
+        <div class="card"><h3>Cloud Computing</h3><p>Implantação e manutenção de servidores web de última geração.</p></div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2>Contato</h2>
+    <p>Email: <span class="highlight">pablojunio014@gmail.com</span></p>
+    <p> WhatsApp: (89) 99464-5331 </p>
+    <p>Instagram: @pablojunioc </p>
+    <p> X: @pabl0morais</p> 
+    </section>
+
+  </div>
+
+  <!-- Imagem flutuante -->
+  <img src="WhatsApp Image 2026-04-29 at 15.38.23.jpeg" alt="Pablo Júnio" class="minha-foto">
+    <footer>
+        <p>&copy; 2026 <span class="pablo">Pablo Morais</span>. Todos os direitos reservados.</p>
+    </footer>
+</body>
+</html>
