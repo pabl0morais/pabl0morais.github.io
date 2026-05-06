@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
-<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet"><meta charset="UTF-8">
 <title>Pablo Júnio | Dev</title>
 
 <style>
   /* CONFIGURAÇÕES GERAIS */
   body {
-  overflow-x: hidden; /* Evita que a luz crie barra de rolagem */
+  overflow-x: hidden; /* Evita que a NNluz crie barra de rolagem */
   background: radial-gradient(circle at center, #0a0a0a 0%, #000 100%);
 }
 
 .luz-neon {
   position: fixed;
-  width: 800px; 
+  width: 800px; /* Maior para cobrir mais o fundo */
   height: 800px;
+  /* Cor mais forte e rastro mais longo */
   background: radial-gradient(circle, rgba(3, 223, 80, 0.4), transparent 75%); 
   filter: blur(100px);
   z-index: -1;
@@ -28,6 +28,7 @@
   0% { transform: translate(0, 0); }
   100% { transform: translate(70vw, 70vh); }
 }
+
   * {
     margin: 0;
     padding: 0;
@@ -175,6 +176,57 @@
     }
         footer { text-align: center; padding: 20px; color: #888; font-size: 0.8rem; }
         .pablo { color: #03df50; font-weight: bold; }
+
+    .habilidades-item i {
+        font-size: 80px !important; /* Aumenta a logo */
+        display: block;
+        margin-bottom: 10px;
+        color: #03df50; /* Verde neon para combinar */
+    }
+
+    .habilidades-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+        justify-content: left;
+    }
+
+   aside {
+    width: 250px;
+    height: 100vh;
+    background: #0a0a0a;
+    position: fixed;
+    padding: 30px 15px;
+    
+    /* DETALHE 1: Borda neon principal */
+    border-right: 3px solid #03df50;
+    box-shadow: 5px 0 20px rgba(3, 223, 80, 0.3);
+    
+    /* DETALHE 2: O preenchimento (Grid de fundo visível) */
+    background-image: 
+        radial-gradient(rgba(3, 223, 80, 0.15) 1px, transparent 1px);
+    background-size: 25px 25px; /* Isso cria vários pontinhos verdes no fundo */
+    
+    /* DETALHE 3: Linha de brilho no topo */
+    border-top: 1px solid rgba(3, 223, 80, 0.2);
+    
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+}
+
+/* Detalhe extra: Uma barrinha decorativa antes de cada item do menu */
+aside ul li a {
+    border-left: 2px solid transparent;
+    padding-left: 10px;
+    transition: 0.4s;
+}
+
+aside ul li a:hover {
+    border-left: 2px solid #03df50; /* A barrinha acende ao passar o mouse */
+    background: rgba(3, 223, 80, 0.1);
+    color: #fff;
+}
     </style>
 </style>
 </head>
@@ -184,19 +236,19 @@
   <nav class="sidebar">
     <h2>PABLO MORAIS</h2>
     <ul>
-      <li><a href="#home">Home</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#work">Work</a></li>
-      <li><a href="#services">Services</a></li>
-      <li><a href="#contact">Contact</a></li>
+           <li><a href="#Início"><i class="fas fa-home"></i> Início</a></li>
+           <li><a href="#Sobre"><i class="fas fa-user"></i> Sobre</a></li>
+           <li><a href="#Habilidades"><i class="fas fa-code"></i> Habilidades</a></li>
+           <li><a href="#Trabalhos"><i class="fas fa-briefcase"></i> Trabalhos</a></li>
+           <li><a href="#Serviços"><i class="fas fa-laptop-code"></i> Serviços</a></li>
+           <li><a href="#Contato"><i class="fas fa-envelope"></i> Contato</a></li>
     </ul>
   </nav>
 
   <!-- Conteúdo -->
   <div class="main-content">
     
-    <section id="home">
+    <section id="Início">
   <h1>Olá, eu sou o <span class="highlight">Pablo!</span></h1>
   <p class="subtitle">
     <strong>Desenvolvedor | Acadêmico de Téc. em Informática</strong>
@@ -212,33 +264,33 @@
   </p>
 </section>
 
-    <section id="about">
+    <section id="Sobre">
       <h2>Sobre Mim</h2>
       <p>Desenvolvo sistemas funcionais com foco em organização e eficiência.</p>
        <p>Curso o 3º ano do Ensino Médio.</p>
         <p> Atualmente moro em Floriano, Piauí.</p>
     </section>
 
-    <section id="skills">
+    <section id="Habilidades">
   <h2>Habilidades</h2>
-  <div class="skills-grid">
+  <div class="habilidades-grid">
     <!-- Python -->
-    <div class="skill-item">
+    <div class="habilidades-item">
       <i class="devicon-python-plain colored"></i>
       <span>Python</span>
     </div>
     <!-- Java -->
-    <div class="skill-item">
+    <div class="habilidades-item">
       <i class="devicon-java-plain colored"></i>
       <span>Java</span>
     </div>
     <!-- PostgreSQL -->
-    <div class="skill-item">
+    <div class="habilidades-item">
       <i class="devicon-postgresql-plain colored"></i>
       <span>PostgreSQL</span>
     </div>
     <!-- HTML5 -->
-    <div class="skill-item">
+    <div class="habilidades-item">
       <i class="devicon-html5-plain colored"></i>
       <span>HTML5</span>
     </div>
@@ -246,7 +298,7 @@
   </div>
 </section>
 
-    <section id="work">
+    <section id="Trabalhos">
      <h2>Projetos de Impacto</h2>
       <div class="card">
         <h3>Sistema de Gestão de Fluxo Institucional</h3>
@@ -254,7 +306,7 @@
       </div>
     </section>
 
-    <section id="services">
+    <section id="Serviços">
      <h2>Especialidades</h2>
       <div class="card-grid">
         <div class="card"><h3>Engenharia de Software</h3><p>Criação de sistemas escaláveis e robustos para empresas de tecnologia.</p></div>
@@ -263,11 +315,11 @@
       </div>
     </section>
 
-    <section id="contact">
+    <section id="Contato">
       <h2>Contato</h2>
     <p>Email: <span class="highlight">pablojunio014@gmail.com</span></p>
     <p> WhatsApp: (89) 99464-5331 </p>
-  </p>
+    <p>Instagram: @pablojunioc </p>
     <p> X: @pabl0morais</p> 
     </section>
 
