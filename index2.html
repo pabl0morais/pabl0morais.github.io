@@ -2,310 +2,206 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Treino Interativo - II SPELLING BEE / DELETRE / SOLETRANDO 2026</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
     body { font-family: 'Poppins', sans-serif; }
-    .pulse-animation {
-      animation: pulse 1.5s infinite;
-    }
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.03); }
-      100% { transform: scale(1); }
-    }
   </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between select-none">
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-center p-2 sm:p-4">
 
-  <!-- Header -->
-  <header class="bg-slate-800 border-b border-slate-700 p-3 sm:p-4 shadow-lg sticky top-0 z-40">
-    <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
-      <div class="flex items-center space-x-3 text-center sm:text-left">
-        <div class="bg-amber-500 text-slate-900 p-2 sm:p-3 rounded-xl text-lg sm:text-xl font-bold flex-shrink-0">
+  <!-- Main Container Compacto -->
+  <div class="w-full max-w-md bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-xl flex flex-col gap-3">
+    
+    <!-- Header -->
+    <div class="flex flex-col gap-2 border-b border-slate-700 pb-3">
+      <div class="flex items-center gap-2">
+        <div class="bg-amber-500 text-slate-900 p-2 rounded-lg text-base font-bold">
           <i class="fa-solid fa-graduation-cap"></i>
         </div>
         <div>
-          <h1 class="font-bold text-sm sm:text-lg leading-tight">II SPELLING BEE / DELETRE / SOLETRANDO</h1>
-          <p class="text-[10px] sm:text-xs text-amber-400 font-medium">Colégio Técnico de Floriano - CTF/UFPI (2026)</p>
+          <h1 class="font-bold text-xs leading-tight">II SPELLING BEE / DELETRE / SOLETRANDO</h1>
+          <p class="text-[10px] text-amber-400 font-medium">CTF / UFPI (2026)</p>
         </div>
       </div>
       
-      <!-- Idioma Filtros - Scroll horizontal no mobile caso precise -->
-      <div class="flex w-full sm:w-auto justify-center gap-1 sm:gap-1.5 overflow-x-auto pb-1 sm:pb-0">
-        <button id="langFilterAll" onclick="setLanguageFilter('all')" class="px-2.5 py-1.5 text-xs font-semibold rounded-lg bg-amber-500 text-slate-900 flex-1 sm:flex-none text-center">Todos</button>
-        <button id="langFilterPt" onclick="setLanguageFilter('pt')" class="px-2 py-1.5 text-xs font-semibold rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-200 flex-1 sm:flex-none text-center whitespace-nowrap">🇧🇷 PT</button>
-        <button id="langFilterEn" onclick="setLanguageFilter('en')" class="px-2 py-1.5 text-xs font-semibold rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-200 flex-1 sm:flex-none text-center whitespace-nowrap">🇬🇧 EN</button>
-        <button id="langFilterEs" onclick="setLanguageFilter('es')" class="px-2 py-1.5 text-xs font-semibold rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-200 flex-1 sm:flex-none text-center whitespace-nowrap">🇪🇸 ES</button>
-      </div>
-    </div>
-  </header>
-
-  <!-- Main Container -->
-  <main class="flex-1 max-w-4xl w-full mx-auto p-3 sm:p-4 flex flex-col justify-between">
-    
-    <!-- Scoreboard -->
-    <div class="grid grid-cols-3 gap-2 sm:gap-3 mb-3 sm:mb-4">
-      <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-2 sm:p-3 text-center">
-        <span class="text-[10px] sm:text-xs text-slate-400 block uppercase font-semibold">Acertos</span>
-        <span id="scoreCorrect" class="text-xl sm:text-2xl font-bold text-emerald-400">0</span>
-      </div>
-      <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-2 sm:p-3 text-center">
-        <span class="text-[10px] sm:text-xs text-slate-400 block uppercase font-semibold">Erros</span>
-        <span id="scoreIncorrect" class="text-xl sm:text-2xl font-bold text-rose-400">0</span>
-      </div>
-      <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-2 sm:p-3 text-center">
-        <span class="text-[10px] sm:text-xs text-slate-400 block uppercase font-semibold">Restantes</span>
-        <span id="wordsRemaining" class="text-xl sm:text-2xl font-bold text-amber-400">0</span>
+      <!-- Filtro Idiomas Compacto -->
+      <div class="flex gap-1 w-full justify-between pt-1">
+        <button id="langFilterAll" onclick="setLanguageFilter('all')" class="px-2 py-1 text-[10px] font-bold rounded bg-amber-500 text-slate-900 flex-1 text-center">Todos</button>
+        <button id="langFilterPt" onclick="setLanguageFilter('pt')" class="px-2 py-1 text-[10px] font-bold rounded bg-slate-700 text-slate-300 flex-1 text-center">🇧🇷 PT</button>
+        <button id="langFilterEn" onclick="setLanguageFilter('en')" class="px-2 py-1 text-[10px] font-bold rounded bg-slate-700 text-slate-300 flex-1 text-center">🇬🇧 EN</button>
+        <button id="langFilterEs" onclick="setLanguageFilter('es')" class="px-2 py-1 text-[10px] font-bold rounded bg-slate-700 text-slate-300 flex-1 text-center">🇪🇸 ES</button>
       </div>
     </div>
 
-    <!-- Main Card -->
-    <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 sm:p-6 shadow-2xl flex-1 flex flex-col justify-between mb-2 sm:mb-4">
-      
-      <div>
-        <div class="flex justify-between items-center mb-4">
-          <span id="wordLanguageBadge" class="px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-bold tracking-wider uppercase bg-blue-500/20 text-blue-400 border border-blue-500/30">
-            INGLÊS
-          </span>
-          <span class="text-xs text-slate-400">Palavra <span id="currentWordIndex">1</span> de <span id="totalWordCount">0</span></span>
-        </div>
-
-        <div class="text-center my-2 sm:my-4">
-          <button onclick="speakWord(true)" class="w-full sm:w-auto bg-amber-500 active:bg-amber-600 hover:bg-amber-400 text-slate-900 font-bold px-5 py-3.5 sm:px-6 sm:py-4 rounded-full text-base sm:text-lg shadow-lg transition-all flex items-center justify-center gap-2 sm:gap-3 mx-auto pulse-animation touch-manipulation">
-            <i class="fa-solid fa-volume-high text-lg sm:text-xl"></i>
-            <span>OUVIR PALAVRA (2x)</span>
-          </button>
-          <p class="text-[11px] sm:text-xs text-slate-400 mt-2">Toque para ouvir a banca pronunciar a palavra.</p>
-        </div>
-
-        <!-- Help Actions -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 mt-4">
-          <button onclick="toggleContextSentence()" id="btnSentence" class="bg-slate-700/60 active:bg-slate-600 hover:bg-slate-700 text-slate-200 p-2.5 sm:p-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 border border-slate-600 transition touch-manipulation">
-            <i class="fa-solid fa-quote-left text-amber-400"></i>
-            <span>Solicitar Frase no Contexto</span>
-          </button>
-          <button onclick="toggleDefinition()" id="btnDefinition" class="bg-slate-700/60 active:bg-slate-600 hover:bg-slate-700 text-slate-200 p-2.5 sm:p-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 border border-slate-600 transition touch-manipulation">
-            <i class="fa-solid fa-book-open text-amber-400"></i>
-            <span>Solicitar Definição</span>
-          </button>
-        </div>
-
-        <!-- Context/Definition Display -->
-        <div id="infoDisplayBox" class="mt-3 p-3 sm:p-4 bg-slate-900/60 border border-slate-700 rounded-xl text-xs sm:text-sm min-h-[50px] hidden transition-all">
-          <p id="infoDisplayText" class="text-slate-300 italic"></p>
-        </div>
+    <!-- Placar Compacto -->
+    <div class="grid grid-cols-3 gap-2 text-center">
+      <div class="bg-slate-900/60 border border-slate-700 rounded-lg p-1.5">
+        <span class="text-[9px] text-slate-400 font-bold uppercase block">Acertos</span>
+        <span id="scoreCorrect" class="text-base font-bold text-emerald-400">0</span>
       </div>
-
-      <!-- User Spelling Input Section -->
-      <div class="mt-6 sm:mt-8">
-        <label class="block text-[10px] sm:text-xs font-medium text-slate-400 mb-1.5 uppercase tracking-wider text-center">
-          Digite para soletrar (Cada letra será falada em voz alta)
-        </label>
-
-        <div class="relative">
-          <input 
-            type="text" 
-            id="spellingInput" 
-            placeholder="Digite aqui..."
-            class="w-full bg-slate-900 border-2 border-slate-700 focus:border-amber-500 rounded-xl px-3 py-2.5 sm:py-3 text-center text-base sm:text-lg font-mono tracking-widest text-white uppercase outline-none transition"
-            onkeypress="handleKeyPress(event)"
-            autocomplete="off"
-            autocorrect="off"
-            autocapitalize="characters"
-            spellcheck="false"
-          />
-        </div>
-
-        <div class="flex gap-2 sm:gap-3 mt-3 sm:mt-4">
-          <button onclick="submitSpelling()" class="flex-1 bg-emerald-600 active:bg-emerald-700 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl text-xs sm:text-sm transition flex items-center justify-center gap-2 shadow-lg touch-manipulation">
-            <i class="fa-solid fa-check"></i>
-            <span>CONFIRMAR</span>
-          </button>
-          <button onclick="skipWord()" class="bg-slate-700 active:bg-slate-600 hover:bg-slate-600 text-slate-300 px-3.5 py-3 rounded-xl text-xs sm:text-sm font-semibold transition touch-manipulation">
-            Pular
-          </button>
-        </div>
+      <div class="bg-slate-900/60 border border-slate-700 rounded-lg p-1.5">
+        <span class="text-[9px] text-slate-400 font-bold uppercase block">Erros</span>
+        <span id="scoreIncorrect" class="text-base font-bold text-rose-400">0</span>
       </div>
-
+      <div class="bg-slate-900/60 border border-slate-700 rounded-lg p-1.5">
+        <span class="text-[9px] text-slate-400 font-bold uppercase block">Restantes</span>
+        <span id="wordsRemaining" class="text-base font-bold text-amber-400">0</span>
+      </div>
     </div>
 
-    <!-- Modal Feedback -->
-    <div id="feedbackModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
-      <div class="bg-slate-800 border border-slate-700 rounded-2xl max-w-sm w-full p-5 sm:p-6 text-center shadow-2xl">
-        <div id="feedbackIcon" class="text-4xl sm:text-5xl mb-3"></div>
-        <h3 id="feedbackTitle" class="text-lg sm:text-xl font-bold mb-2"></h3>
-        <p id="feedbackMessage" class="text-slate-300 text-xs sm:text-sm mb-4"></p>
-        <div id="correctSpellingBox" class="bg-slate-900 p-2.5 sm:p-3 rounded-xl mb-5 font-mono text-amber-400 font-bold tracking-widest text-xs sm:text-sm break-all"></div>
-        <button onclick="nextQuestion()" class="w-full bg-amber-500 active:bg-amber-600 hover:bg-amber-400 text-slate-900 font-bold py-3 rounded-xl text-sm transition touch-manipulation">
-          Próxima Palavra <i class="fa-solid fa-arrow-right ml-1"></i>
+    <!-- Badge e Posição da Palavra -->
+    <div class="flex justify-between items-center mt-1">
+      <span id="wordLanguageBadge" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-blue-500/20 text-blue-400 border border-blue-500/30">
+        INGLÊS
+      </span>
+      <span class="text-[11px] text-slate-400">Palavra <span id="currentWordIndex" class="text-white font-bold">1</span>/<span id="totalWordCount">0</span></span>
+    </div>
+
+    <!-- Botão Principal de Áudio -->
+    <button onclick="speakWord(true)" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold py-2.5 rounded-xl text-xs shadow-md transition flex items-center justify-center gap-2">
+      <i class="fa-solid fa-volume-high text-sm"></i>
+      <span>OUVIR PALAVRA (2x)</span>
+    </button>
+
+    <!-- Botões de Ajuda -->
+    <div class="grid grid-cols-2 gap-2">
+      <button onclick="toggleContextSentence()" id="btnSentence" class="bg-slate-700/60 hover:bg-slate-700 text-slate-200 py-2 px-1 rounded-lg text-[10px] font-semibold flex items-center justify-center gap-1 border border-slate-600">
+        <i class="fa-solid fa-quote-left text-amber-400"></i>
+        <span>Frase no Contexto</span>
+      </button>
+      <button onclick="toggleDefinition()" id="btnDefinition" class="bg-slate-700/60 hover:bg-slate-700 text-slate-200 py-2 px-1 rounded-lg text-[10px] font-semibold flex items-center justify-center gap-1 border border-slate-600">
+        <i class="fa-solid fa-book-open text-amber-400"></i>
+        <span>Definição</span>
+      </button>
+    </div>
+
+    <!-- Área de Exibição de Frase/Definição -->
+    <div id="infoDisplayBox" class="p-2.5 bg-slate-900 border border-slate-700 rounded-lg text-xs hidden">
+      <p id="infoDisplayText" class="text-slate-300 italic"></p>
+    </div>
+
+    <!-- Campo de Entrada / Soletração -->
+    <div class="mt-1 border-t border-slate-700/60 pt-3">
+      <label class="block text-[10px] font-medium text-slate-400 mb-1.5 uppercase tracking-wider text-center">
+        Digite para soletrar (letra por letra em voz alta)
+      </label>
+
+      <input 
+        type="text" 
+        id="spellingInput" 
+        placeholder="DIGITE AQUI..."
+        class="w-full bg-slate-900 border border-slate-700 focus:border-amber-500 rounded-xl px-3 py-2 text-center text-base font-mono tracking-widest text-white uppercase outline-none"
+        onkeypress="handleKeyPress(event)"
+      />
+
+      <div class="flex gap-2 mt-3">
+        <button onclick="submitSpelling()" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow">
+          <i class="fa-solid fa-check"></i>
+          <span>CONFIRMAR</span>
+        </button>
+        <button onclick="skipWord()" class="bg-slate-700 hover:bg-slate-600 text-slate-300 px-3 py-2 rounded-xl text-xs font-semibold">
+          Pular
         </button>
       </div>
     </div>
 
-  </main>
+  </div>
+
+  <!-- Modal Feedback -->
+  <div id="feedbackModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+    <div class="bg-slate-800 border border-slate-700 rounded-2xl max-w-xs w-full p-5 text-center shadow-2xl">
+      <div id="feedbackIcon" class="text-4xl mb-2"></div>
+      <h3 id="feedbackTitle" class="text-lg font-bold mb-1"></h3>
+      <p id="feedbackMessage" class="text-slate-300 text-xs mb-3"></p>
+      <div id="correctSpellingBox" class="bg-slate-900 p-2 rounded-lg mb-4 font-mono text-amber-400 text-xs font-bold tracking-widest"></div>
+      <button onclick="nextQuestion()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold py-2 rounded-xl text-xs">
+        Próxima Palavra <i class="fa-solid fa-arrow-right ml-1"></i>
+      </button>
+    </div>
+  </div>
 
   <script>
     const wordsDatabase = [
-      // ==================== PORTUGUÊS ====================
-      { word: "XÍCARA", lang: "pt", def: "Pequeno recipiente com asa, usado para tomar café ou chá.", sentence: "Ela serviu o café em uma xícara de porcelana." },
-      { word: "EXCEÇÃO", lang: "pt", def: "Desvio de uma regra comum ou geral; particularidade.", sentence: "Não haverá exceção para o cumprimento do horário." },
-      { word: "CORTÊS", lang: "pt", def: "Que demonstra cortesia, educação ou polidez.", sentence: "O jovem foi muito cortês ao ceder seu assento." },
-      { word: "COMPREENSÃO", lang: "pt", def: "Ação de compreender; faculdade de entender algo.", sentence: "A compreensão do texto foi testada na prova." },
-      { word: "PARALELO", lang: "pt", def: "Que se mantém à mesma distância de outro em toda a extensão.", sentence: "As duas ruas seguem em caminho paralelo." },
-      { word: "ENXERGAR", lang: "pt", def: "Alcançar com a vista; perceber pela visão.", sentence: "Com os novos óculos, ele consegue enxergar perfeitamente." },
-      { word: "ANALISAR", lang: "pt", def: "Examinar detalhadamente cada parte de um todo.", sentence: "Precisamos analisar os dados da pesquisa." },
-      { word: "EXIGÊNCIA", lang: "pt", def: "Ato de exigir; requisito obrigatório.", sentence: "A pontualidade é uma exigência do regulamento." },
-      { word: "PRIVILÉGIO", lang: "pt", def: "Vantagem ou direito exclusivo concedido a alguém.", sentence: "É um privilégio estudar em uma boa escola." },
-      { word: "ASFIXIA", lang: "pt", def: "Dificuldade ou paralisação da respiração.", sentence: "A fumaça provocou sensação de asfixia nos presentes." },
-      { word: "AMIZADE", lang: "pt", def: "Afeição recíproca entre duas ou mais pessoas.", sentence: "A amizade entre eles dura desde a infância." },
-      { word: "AÇÚCAR", lang: "pt", def: "Substância doce usada para adoçar alimentos e bebidas.", sentence: "Coloquei pouco açúcar no suco." },
-      { word: "ALMOÇO", lang: "pt", def: "Refeição principal tomada ao meio-dia ou no início da tarde.", sentence: "O almoço será servido às doze horas." },
-      { word: "BIBLIOTECA", lang: "pt", def: "Lugar onde se guardam coleções de livros organizados.", sentence: "Fui à biblioteca estudar para o exame." },
-      { word: "BORBOLETA", lang: "pt", def: "Inseto com quatro asas coloridas e brilhantes.", sentence: "Uma borboleta amarela voou no jardim." },
-      { word: "CADEIRA", lang: "pt", def: "Móvel de assento individual com encosto.", sentence: "Sentei na cadeira perto da janela." },
-      { word: "CADERNO", lang: "pt", def: "Conjunto de folhas de papel encadernadas para anotações.", sentence: "Anotei os exercícios no meu caderno." },
-      { word: "CIDADE", lang: "pt", def: "Aglomerado urbano de tamanho significativo e população densa.", sentence: "Minha cidade é conhecida pela sua cultura." },
-      { word: "COMPUTADOR", lang: "pt", def: "Dispositivo eletrônico de processamento de dados.", sentence: "Uso o computador para pesquisar os trabalhos." },
-      { word: "CORAÇÃO", lang: "pt", def: "Órgão muscular responsável por bombear o sangue.", sentence: "O coração bateu mais forte de emoção." },
-      { word: "COZINHA", lang: "pt", def: "Cômodo da casa preparado para a confecção de alimentos.", sentence: "O cheiro do bolo tomou conta da cozinha." },
-      { word: "ESCALA", lang: "pt", def: "Sequência gradativa de valores, medidas ou tons.", sentence: "O mapa está desenhado em uma escala reduzida." },
-      { word: "ESCOLA", lang: "pt", def: "Instituição destinada ao ensino e aprendizagem de alunos.", sentence: "A escola promoveu uma feira de ciências." },
-      { word: "ESPELHO", lang: "pt", def: "Superfície polida que reflete a luz e as imagens dos objetos.", sentence: "Ela olhou o próprio reflexo no espelho." },
-      { word: "FAMÍLIA", lang: "pt", def: "Grupo de pessoas unidas por laços de parentesco ou afeto.", sentence: "Toda a família se reuniu no domingo." },
-      { word: "GARRAFA", lang: "pt", def: "Recipiente com gargalo estreito usado para guardar líquidos.", sentence: "Leve uma garrafa de água para a caminhada." },
-      { word: "HISTÓRIA", lang: "pt", def: "Narrativa de eventos reais ou ficcionais passados.", sentence: "Adoro estudar a história do Brasil." },
-      { word: "JANELA", lang: "pt", def: "Abertura na parede para entrada de iluminação e ar.", sentence: "Abri a janela para sentir a brisa fresca." },
-      { word: "JARDIM", lang: "pt", def: "Terreno cultivado com flores e plantas ornamentais.", sentence: "As rosas do jardim floresceram na primavera." },
-      { word: "MÚSICA", lang: "pt", def: "Arte de combinar os sons de forma harmoniosa e melodiosa.", sentence: "Ouço música relaxante para estudar." },
-      { word: "NATUREZA", lang: "pt", def: "O mundo físico e seus fenômenos sem intervenção humana.", sentence: "Devemos preservar a natureza e os animais." },
-      { word: "ÔNIBUS", lang: "pt", def: "Veículo automotor de transporte coletivo urbano ou rodoviário.", sentence: "Peguei o ônibus cedo para não me atrasar." },
-      { word: "PADARIA", lang: "pt", def: "Estabelecimento comercial onde se fabrica e vende pão.", sentence: "Comprei pão quentinho na padaria." },
-      { word: "PESQUISA", lang: "pt", def: "Investigação sistemática com o fim de descobrir fatos.", sentence: "A pesquisa revelou ótimos resultados." },
-      { word: "PROFESSOR", lang: "pt", def: "Pessoa encarregada de ensinar uma arte, ciência ou técnica.", sentence: "O professor explicou a matéria claramente." },
-      { word: "RELÓGIO", lang: "pt", def: "Instrumento usado para medir o tempo e indicar as horas.", sentence: "Olhei no relógio e vi que já era tarde." },
-      { word: "SAÚDE", lang: "pt", def: "Estado de bem-estar físico, mental e social completo.", sentence: "Uma alimentação saudável garante boa saúde." },
-      { word: "TELEFONE", lang: "pt", def: "Aparelho de comunicação para transmissão de voz à distância.", sentence: "O telefone tocou no meio da reunião." },
-      { word: "TRABALHO", lang: "pt", def: "Conjunto de atividades humanas executadas para atingir um fim.", sentence: "Ela entregou o trabalho acadêmico no prazo." },
-      { word: "VIAGEM", lang: "pt", def: "Deslocamento de um lugar para outro distante.", sentence: "Fizemos uma linda viagem durante as férias." },
+      // PORTUGUÊS
+      { word: "XÍCARA", lang: "pt", def: "Pequeno recipiente com asa usado para tomar bebidas quentes.", sentence: "Tomei uma xícara de café logo pela manhã." },
+      { word: "EXCEÇÃO", lang: "pt", def: "Ação ou efeito de excetuar; o que se desvia da regra geral.", sentence: "Apenas hoje abriremos uma exceção ao regulamento." },
+      { word: "AQUECIMENTO", lang: "pt", def: "Ato ou efeito de aquecer ou elevar a temperatura.", sentence: "O aquecimento global é uma pauta ambiental urgente." },
+      { word: "CRÂNEO", lang: "pt", def: "Estrutura óssea que envolve e protege o cérebro.", sentence: "O capacete protege o crânio contra impactos severos." },
+      { word: "FASCÍNIO", lang: "pt", def: "Forte atração, admiração ou encantamento por algo.", sentence: "A astronomia sempre causou um grande fascínio nele." },
+      { word: "PARALELEPÍPEDO", lang: "pt", def: "Sólido geométrico ou bloco de pedra usado em calçamentos.", sentence: "A rua antiga da cidade ainda é pavimentada com paralelepípedo." },
+      { word: "SOBRANCELHA", lang: "pt", def: "Conjunto de pelos no arco acima da cavidade ocular.", sentence: "Ela ergueu a sobrancelha ao ouvir a pergunta intrigante." },
+      { word: "CABELEIREIRO", lang: "pt", def: "Profissional especializado no corte e cuidado de cabelos.", sentence: "Ele agendou um horário no cabeleireiro na sexta-feira." },
+      { word: "BENEFICÊNCIA", lang: "pt", def: "Prática constante de fazer o bem ou prestar auxílio.", sentence: "O evento cultural arrecadou fundos para a beneficência." },
+      { word: "SABOTAGEM", lang: "pt", def: "Dano ou destruição intencional praticada contra um serviço.", sentence: "A equipe investigou se a falha no sistema foi sabotagem." },
 
-      // ==================== INGLÊS ====================
+      // INGLÊS
       { word: "ABOUT", lang: "en", def: "Relacionado a um determinado assunto ou pessoa.", sentence: "I was reading a book about the Spanish Civil War." },
       { word: "AGE", lang: "en", def: "O número de anos que alguém viveu ou que algo existe.", sentence: "She left Brazil at the age of 12." },
       { word: "ALSO", lang: "en", def: "Também; Além disso.", sentence: "The book also has a chapter on grammar." },
-      { word: "ANGRIEST", lang: "en", def: "Sentindo ou demonstrando forte irritação, desagrado ou hostilidade; cheio de raiva.", sentence: "She is the angriest of all children." },
-      { word: "BALLOON", lang: "en", def: "Uma pequena bolsa de borracha colorida que você enche com ar para brincar ou usar como decoração.", sentence: "Could you help me to blow up his balloon?" },
+      { word: "ANGRIEST", lang: "en", def: "Sentindo ou demonstrando forte irritação; cheio de raiva.", sentence: "She is the angriest of all children." },
+      { word: "BALLOON", lang: "en", def: "Pequena bolsa de borracha colorida que você enche com ar.", sentence: "Could you help me to blow up his balloon?" },
       { word: "BODY", lang: "en", def: "O corpo físico de uma pessoa ou animal.", sentence: "My body is painful." },
-      { word: "DINNER", lang: "en", def: "A principal refeição do dia que as pessoas geralmente comem à noite.", sentence: "What's for dinner tonight?" },
-      { word: "DOESN'T", lang: "en", def: "Contração de 'does not'. Auxiliar de negativas no Presente Simples.", sentence: "Jack doesn't like bananas." },
-      { word: "DOLLAR", lang: "en", def: "A unidade monetária usada nos EUA, Canadá e em alguns outros países.", sentence: "I have only fifty cents of dollar." },
-      { word: "DRIVING", lang: "en", def: "O ato de dirigir um carro ou o ato de alguém dirigir.", sentence: "Peter's driving very fastly." },
+      { word: "DINNER", lang: "en", def: "A principal refeição do dia que as pessoas comem à noite.", sentence: "What's for dinner tonight?" },
+      { word: "DOESN'T", lang: "en", def: "Contração de 'does not'. Auxiliar de negativas no Presente.", sentence: "Jack doesn't like bananas." },
+      { word: "DOLLAR", lang: "en", def: "A unidade monetária usada nos EUA e Canadá.", sentence: "I have only fifty cents of dollar." },
+      { word: "DRIVING", lang: "en", def: "O ato de dirigir um carro.", sentence: "Peter's driving very fastly." },
       { word: "EYES", lang: "en", def: "Os órgãos no seu rosto usados para ver.", sentence: "She has blue eyes." },
       { word: "GARDEN", lang: "en", def: "Jardim; área cultivada com plantas e flores.", sentence: "They spent the afternoon working in the garden." },
       { word: "HAPPINESS", lang: "en", def: "Felicidade; estado de contentamento e bem-estar.", sentence: "Happiness is the key to a fulfilling life." },
       { word: "HEALTH", lang: "en", def: "A condição do seu corpo.", sentence: "Regular exercise is good for your health." },
-      { word: "HEARD", lang: "en", def: "Passado de 'hear'; estar ciente de um som através dos ouvidos.", sentence: "I heard your voice in the distance." },
-      { word: "HEAVY", lang: "en", def: "Objetos pesados pesam muito; usado para dizer quanto alguém ou algo pesa.", sentence: "Let me help you - you can't carry these heavy bags alone." },
+      { word: "HEARD", lang: "en", def: "Passado de 'hear'; ouvir um som através dos ouvidos.", sentence: "I heard your voice in the distance." },
+      { word: "HEAVY", lang: "en", def: "Objetos pesados que pesam muito.", sentence: "Let me help you - you can't carry these heavy bags alone." },
       { word: "HUNDRED", lang: "en", def: "O número 100.", sentence: "He is a hundred miles away from me." },
       { word: "JOB", lang: "en", def: "Emprego; ocupação remunerada.", sentence: "She found a new job at the local hospital." },
-      { word: "LIBRARY", lang: "en", def: "Uma sala ou edifício que contém uma coleção de livros e materiais que você pode ler ou emprestar.", sentence: "There is one library near my house." },
-      { word: "LIFE", lang: "en", def: "A existência de uma pessoa ou seres vivos e suas atividades.", sentence: "Is there life in Outer space?" },
-      { word: "PAST", lang: "en", def: "Algo que aconteceu ou existiu antes de agora; usado para se referir a um período de tempo antes e até o presente.", sentence: "I've spent the past ten years in and out of jobs." },
-      { word: "PICNIC", lang: "en", def: "Uma refeição que você prepara e leva consigo para comer ao ar livre.", sentence: "We're going to have a picnic down by the lake." },
-      { word: "PIECE", lang: "en", def: "Uma quantidade de algo ou uma parte de algo.", sentence: "I need a piece of paper." },
-      { word: "PRIZE", lang: "en", def: "Algo valioso que é dado a alguém que vence uma competição ou que fez um bom trabalho.", sentence: "In 1921, Albert Einstein won the Nobel Prize in Physics." },
-      { word: "QUEEN", lang: "en", def: "Uma governante feminina em alguns países; a esposa de um rei quando ele é o governante principal de um país.", sentence: "Long live to the queen!" },
-      { word: "STRETCH", lang: "en", def: "Tornar-se mais longo ou largo, ou puxar algo para que se torne mais longo e largo.", sentence: "Don't pull my sweater - you'll stretch it." },
+      { word: "LIBRARY", lang: "en", def: "Edifício com coleção de livros para leitura ou empréstimo.", sentence: "There is one library near my house." },
+      { word: "LIFE", lang: "en", def: "A existência de uma pessoa ou seres vivos.", sentence: "Is there life in Outer space?" },
+      { word: "PAST", lang: "en", def: "Algo que aconteceu antes de agora.", sentence: "I've spent the past ten years in and out of jobs." },
+      { word: "PICNIC", lang: "en", def: "Refeição preparada para comer ao ar livre.", sentence: "We're going to have a picnic down by the lake." },
+      { word: "PIECE", lang: "en", def: "Uma quantidade ou parte de algo.", sentence: "I need a piece of paper." },
+      { word: "PRIZE", lang: "en", def: "Prêmio valioso dado a quem vence uma competição.", sentence: "In 1921, Albert Einstein won the Nobel Prize in Physics." },
+      { word: "QUEEN", lang: "en", def: "Uma governante feminina em alguns países.", sentence: "Long live to the queen!" },
+      { word: "STRETCH", lang: "en", def: "Tornar-se mais longo ou puxar algo para esticar.", sentence: "Don't pull my sweater - you'll stretch it." },
       { word: "UNIVERSITY", lang: "en", def: "Universidade; instituição de ensino superior.", sentence: "He plans to attend university next year." },
       { word: "WONDERFUL", lang: "en", def: "Maravilhoso; excelente; muito bom.", sentence: "The view from the mountain was wonderful." },
-      { word: "ALWAYS", lang: "en", def: "Em todas as ocasiões; constantemente.", sentence: "She always drinks coffee in the morning." },
-      { word: "BEAUTIFUL", lang: "en", def: "Agradável aos olhos ou à mente; belo.", sentence: "They watched a beautiful sunset at the beach." },
-      { word: "BICYCLE", lang: "en", def: "Veículo de duas rodas movido a pedais.", sentence: "He rides his bicycle to school every day." },
-      { word: "BREAKFAST", lang: "en", def: "A primeira refeição do dia.", sentence: "I ate eggs and toast for breakfast." },
-      { word: "BROTHER", lang: "en", def: "Um homem ou menino em relação aos seus outros irmãos.", sentence: "My brother helps me with my homework." },
-      { word: "BUTTERFLY", lang: "en", def: "Inseto de asas grandes e coloridas.", sentence: "A colorful butterfly landed on the flower." },
-      { word: "COMPUTER", lang: "en", def: "Máquina eletrônica para armazenar e processar dados.", sentence: "I use my computer to study every night." },
-      { word: "DELICIOUS", lang: "en", def: "Muito agradável ao paladar; saboroso.", sentence: "This homemade pizza is delicious." },
-      { word: "FAMILY", lang: "en", def: "Grupo formado por pais e filhos ou parentes.", sentence: "We went on vacation with our family." },
-      { word: "FRIEND", lang: "en", def: "Pessoa com quem se tem vínculo de afeto e amizade.", sentence: "She is my best friend from middle school." },
-      { word: "HOSPITAL", lang: "en", def: "Instituição para tratamento médico de doentes.", sentence: "The doctor works at the central hospital." },
-      { word: "KITCHEN", lang: "en", def: "Cômodo onde a comida é preparada e cozida.", sentence: "Dad is cooking lunch in the kitchen." },
-      { word: "LANGUAGE", lang: "en", def: "Sistema de comunicação falado ou escrito.", sentence: "English is a widely spoken language." },
-      { word: "LISTEN", lang: "en", def: "Prestar atenção para ouvir um som.", sentence: "Always listen carefully to the instructions." },
-      { word: "MORNING", lang: "en", def: "Período inicial do dia entre a alvorada e o meio-dia.", sentence: "Good morning to everyone in the class." },
-      { word: "MOTHER", lang: "en", def: "Mãe; figura progenitora feminina.", sentence: "My mother made a delicious chocolate cake." },
-      { word: "NEIGHBOR", lang: "en", def: "Pessoa que mora perto ou ao lado de você.", sentence: "Our neighbor gave us some fresh fruit." },
-      { word: "NOTEBOOK", lang: "en", def: "Livro de páginas em branco usado para anotações.", sentence: "Write your name on the first page of the notebook." },
-      { word: "PENCIL", lang: "en", def: "Instrumento de grafite usado para escrever ou desenhar.", sentence: "Can I borrow a pencil for the test?" },
-      { word: "RAINBOW", lang: "en", def: "Arco colorido formado no céu após a chuva.", sentence: "Look at the bright rainbow in the sky!" },
-      { word: "SCHOOL", lang: "en", def: "Instituição de ensino.", sentence: "Students walk together to school." },
-      { word: "STREET", lang: "en", def: "Via pública em uma cidade ou vila com prédios.", sentence: "Turn left at the end of the street." },
-      { word: "STUDENT", lang: "en", def: "Pessoa que está estudando em uma escola ou faculdade.", sentence: "Every student must bring a dictionary." },
-      { word: "SUMMER", lang: "en", def: "A estação mais quente do ano.", sentence: "We love going to the beach during summer." },
-      { word: "TEACHER", lang: "en", def: "Pessoa cuja profissão é ensinar alunos.", sentence: "The English teacher explained the grammar rule." },
-      { word: "TOGETHER", lang: "en", def: "Em companhia de outro; em conjunto.", sentence: "We played board games together last evening." },
-      { word: "TOMORROW", lang: "en", def: "O dia seguinte ao dia de hoje.", sentence: "Tomorrow is Saturday and we have no school." },
-      { word: "WEATHER", lang: "en", def: "A condição da atmosfera quanto ao calor, chuva ou vento.", sentence: "The weather today is warm and sunny." },
-      { word: "WINDOW", lang: "en", def: "Abertura no muro para passagem de luz e ar.", sentence: "Please close the window because it is cold." },
-      { word: "YELLOW", lang: "en", def: "A cor das bananas maduras ou do sol.", sentence: "She bought a bright yellow raincoat." },
+      { word: "NEIGHBORHOOD", lang: "en", def: "Bairro ou área residencial de uma cidade.", sentence: "It is a quiet and safe neighborhood." },
+      { word: "KNOWLEDGE", lang: "en", def: "Conhecimento e informações adquiridas por estudo.", sentence: "Reading is a great way to acquire knowledge." },
 
-      // ==================== ESPANHOL ====================
+      // ESPANHOL
       { word: "CASA", lang: "es", def: "Edificio o lugar donde vive una persona o una familia.", sentence: "Vivo en una casa grande con mi familia." },
-      { word: "PERRO", lang: "es", def: "Animal doméstico de cuatro patas, considerado el mejor amigo del hombre.", sentence: "El perro corre por el parque." },
-      { word: "AGUA", lang: "es", def: "Líquido transparente, incoloro e inodoro, esencial para la vida.", sentence: "Necesito un vaso de agua, por favor." },
+      { word: "PERRO", lang: "es", def: "Animal doméstico de cuatro patas.", sentence: "El perro corre por el parque." },
+      { word: "AGUA", lang: "es", def: "Líquido transparente e inodoro esencial para la vida.", sentence: "Necesito un vaso de agua, por favor." },
       { word: "SOL", lang: "es", def: "Estrella que da luz y calor a la Tierra.", sentence: "El sol brilla en el cielo." },
-      { word: "LIBRO", lang: "es", def: "Conjunto de páginas escritas o impresas unidas entre sí y protegidas por una cubierta.", sentence: "Estoy leyendo un libro interesante." },
-      { word: "PAN", lang: "es", def: "Alimento hecho con masa de harina y agua, cocido al horno.", sentence: "Quiero comer pan con mantequilla." },
-      { word: "ROSA", lang: "es", def: "Flor ornamental, generalmente con espinas en el tallo.", sentence: "Le regalé una rosa a mi madre." },
-      { word: "GATO", lang: "es", def: "Animal doméstico felino, de tamaño pequeño y movimientos ágiles.", sentence: "El gato duerme en el sofá." },
+      { word: "LIBRO", lang: "es", def: "Conjunto de páginas escritas protegidas por una cubierta.", sentence: "Estoy leyendo un libro interesante." },
+      { word: "PAN", lang: "es", def: "Alimento hecho con masa de harina y agua cocido al horno.", sentence: "Quiero comer pan con mantequilla." },
+      { word: "ROSA", lang: "es", def: "Flor ornamental con espinas en el tallo.", sentence: "Le regalé una rosa a mi madre." },
+      { word: "GATO", lang: "es", def: "Animal doméstico felino de pequeño tamaño.", sentence: "El gato duerme en el sofá." },
       { word: "DÍA", lang: "es", def: "Período de 24 horas que empieza a medianoche.", sentence: "Hoy es un día muy especial." },
-      { word: "LECHE", lang: "es", def: "Líquido blanco producido por las hembras de los mamíferos para alimentar a sus crías.", sentence: "Prefiero la leche fría por la mañana." },
+      { word: "LECHE", lang: "es", def: "Líquido blanco producido por mamíferos hembra.", sentence: "Prefiero la leche fría por la mañana." },
       { word: "ESPEJO", lang: "es", def: "Superficie que refleja la imagen de lo que tiene delante.", sentence: "Me miré en el espejo antes de salir." },
       { word: "MONTAÑA", lang: "es", def: "Gran elevación natural del terreno.", sentence: "Vamos a escalar la montaña este fin de semana." },
       { word: "ESTRELLA", lang: "es", def: "Cuerpo celeste que emite luz propia.", sentence: "Hay muchas estrellas en el cielo." },
-      { word: "ZAPATO", lang: "es", def: "Calzado que cubre el pie, generalmente hasta el tobillo.", sentence: "Compré un zapato nuevo para la fiesta." },
+      { word: "ZAPATO", lang: "es", def: "Calzado que cubre el pie hasta el tobillo.", sentence: "Compré un zapato nuevo para la fiesta." },
       { word: "CAMINAR", lang: "es", def: "Moverse a pie de un lugar a otro.", sentence: "Me gusta caminar por la playa al atardecer." },
-      { word: "BOSQUE", lang: "es", def: "Terreno extenso cubierto de árboles y vegetación.", sentence: "El bosque está lleno de árboles altos." },
-      { word: "VENTANA", lang: "es", def: "Abertura en la pared que permite la entrada de luz y aire.", sentence: "Abre la ventana para que entre aire fresco." },
-      { word: "DESAYUNO", lang: "es", def: "Primera comida del día, que se toma por la mañana.", sentence: "El desayuno es la comida más importante del día." },
-      { word: "LLAVE", lang: "es", def: "Objeto metálico que se usa para abrir o cerrar una cerradura.", sentence: "No encuentro la llave de la puerta." },
+      { word: "BOSQUE", lang: "es", def: "Terreno extenso cubierto de árboles.", sentence: "El bosque está lleno de árboles altos." },
+      { word: "VENTANA", lang: "es", def: "Abertura en la pared que permite entrada de luz.", sentence: "Abre la ventana para que entre aire fresco." },
+      { word: "DESAYUNO", lang: "es", def: "Primera comida del día por la mañana.", sentence: "El desayuno es la comida más importante del día." },
+      { word: "LLAVE", lang: "es", def: "Objeto metálico para abrir o cerrar cerraduras.", sentence: "No encuentro la llave de la puerta." },
       { word: "CUERPO", lang: "es", def: "Conjunto de partes físicas que forman un ser vivo.", sentence: "El ejercicio es bueno para el cuerpo." },
       { word: "MURCIÉLAGO", lang: "es", def: "Mamífero volador de hábitos nocturnos.", sentence: "El murciélago voló dentro de la cueva." },
-      { word: "ENFERMERA", lang: "es", def: "Persona que cuida a los enfermos siguiendo indicaciones médicas.", sentence: "La enfermera atendió al paciente con amabilidad." },
+      { word: "ENFERMERA", lang: "es", def: "Persona que cuida a los enfermos.", sentence: "La enfermera atendió al paciente con amabilidad." },
       { word: "DESARROLLAR", lang: "es", def: "Hacer que algo crezca o progrese.", sentence: "Es importante desarrollar nuevas habilidades." },
-      { word: "AGUACATE", lang: "es", def: "Fruta de pulpa verde y cremosa, muy nutritiva.", sentence: "Me encanta el aguacate en la ensalada." },
-      { word: "PARAGUAS", lang: "es", def: "Objeto que sirve para protegerse de la lluvia.", sentence: "Lleva un paraguas, va a llover." },
-      { word: "ZANAHORIA", lang: "es", def: "Raíz comestible de color anaranjado, rica en vitamina A.", sentence: "La sopa tiene zanahoria y papa." },
+      { word: "AGUACATE", lang: "es", def: "Fruta de pulpa verde y cremosa.", sentence: "Me encanta el aguacate en la ensalada." },
+      { word: "PARAGUAS", lang: "es", def: "Objeto para protegerse de la lluvia.", sentence: "Lleva un paraguas, va a llover." },
+      { word: "ZANAHORIA", lang: "es", def: "Raíz comestible de color anaranjado.", sentence: "La sopa tiene zanahoria y papa." },
       { word: "OVEJA", lang: "es", def: "Animal domesticado que da lana y carne.", sentence: "En el campo hay muchas ovejas pastando." },
       { word: "DESEMPEÑAR", lang: "es", def: "Realizar una función o tarea asignada.", sentence: "Ella va a desempeñar un papel importante en la obra." },
       { word: "ANTEAYER", lang: "es", def: "Día anterior al de ayer.", sentence: "Fui al médico anteayer." },
-      { word: "AJEDREZ", lang: "es", def: "Juego de estrategia que se practica entre dos personas sobre un tablero.", sentence: "Jugué al ajedrez con mi abuelo." },
-      { word: "AMISTAD", lang: "es", def: "Relación de afecto y confianza entre personas.", sentence: "Nuestra amistad ha durado muchos años." },
-      { word: "AZÚCAR", lang: "es", def: "Sustancia dulce usada para endulzar alimentos.", sentence: "Puse un poco de azúcar en el café." },
-      { word: "BIBLIOTECA", lang: "es", def: "Lugar donde se guardan libros para lectura o consulta.", sentence: "Estudiamos toda la tarde en la biblioteca." },
-      { word: "BOLÍGRAFO", lang: "es", def: "Instrumento para escribir que tiene una bolita de metal en la punta.", sentence: "Escribe tu nombre con un bolígrafo azul." },
-      { word: "CABALLO", lang: "es", def: "Mamífero grande de cuatro patas usado para montar.", sentence: "El caballo corría libre por el campo." },
-      { word: "CIUDAD", lang: "es", def: "Población grande cuyos habitantes se dedican a actividades no agrícolas.", sentence: "Madrid es una ciudad muy hermosa." },
-      { word: "COCINA", lang: "es", def: "Lugar de la casa preparado para cocinar.", sentence: "Mi abuela prepara la cena en la cocina." },
-      { word: "COMPUTADORA", lang: "es", def: "Máquina electrónica para procesar información.", sentence: "Uso la computadora para hacer mis tareas." },
-      { word: "CORAZÓN", lang: "es", def: "Órgano muscular que bombea la sangre a todo el cuerpo.", sentence: "El corazón le latía rápidamente por los nervios." },
-      { word: "ESCUELA", lang: "es", def: "Establecimiento donde se imparte enseñanza.", sentence: "Los niños van sonrientes a la escuela." },
-      { word: "FAMILIA", lang: "es", def: "Grupo de personas emparentadas entre sí.", sentence: "Cenamos todos juntos en familia." },
-      { word: "GUITARRA", lang: "es", def: "Instrumento musical de cuerda afinado de seis cuerdas.", sentence: "Tocó una bonita canción con la guitarra." },
-      { word: "HERMANO", lang: "es", def: "Persona que tiene los mismos padres que otra.", sentence: "Mi hermano mayor me ayudó a estudiar." },
-      { word: "HISTORIA", lang: "es", def: "Disciplina que estudia los acontecimientos del pasado.", sentence: "La historia de este país es fascinante." },
-      { word: "INVIERNO", lang: "es", def: "Estación del año más fría.", sentence: "En invierno hace mucho frío y usamos abrigo." },
-      { word: "JARDÍN", lang: "es", def: "Terreno donde se cultivan plantas y flores.", sentence: "Las flores del jardín huelen delicioso." },
-      { word: "JUVENTUD", lang: "es", def: "Período de la vida entre la infancia y la edad adulta.", sentence: "La juventud es una etapa de mucho aprendizaje." },
-      { word: "MAESTRO", lang: "es", def: "Persona que enseña una ciencia, arte u oficio.", sentence: "El maestro respondió todas nuestras preguntas." },
-      { word: "MANZANA", lang: "es", def: "Fruta comestible de piel roja, verde o amarilla.", sentence: "Comí una manzana roja muy jugosa." },
-      { word: "MARIPOSA", lang: "es", def: "Insecto volador con alas de hermosos colores.", sentence: "Una mariposa se posó sobre el rosal." },
-      { word: "MÚSICA", lang: "es", def: "Arte de combinar los sonidos según las reglas de la armonía.", sentence: "La música alegre cambia el estado de ánimo." },
-      { word: "NOCHE", lang: "es", def: "Período comprendido entre la puesta y la salida del sol.", sentence: "Las estrellas brillaban intensamente en la noche." },
-      { word: "PAISAJE", lang: "es", def: "Extensión de terreno que se ve desde un sitio.", sentence: "El paisaje desde la cima era impresionante." },
+      { word: "AJEDREZ", lang: "es", def: "Juego de estrategia sobre un tablero.", sentence: "Jugué al ajedrez con mi abuelo." },
+      { word: "PAISAJE", lang: "es", def: "Terreno que se ve desde un sitio.", sentence: "El paisaje desde la cima era impresionante." },
       { word: "PANTALLA", lang: "es", def: "Superficie donde se proyectan las imágenes.", sentence: "La pantalla del televisor es grande." },
       { word: "RELOJ", lang: "es", def: "Instrumento que sirve para medir el tiempo.", sentence: "El reloj de la sala da las doce." },
       { word: "SOMBRERO", lang: "es", def: "Prenda de vestir que sirve para cubrir la cabeza del sol o frío.", sentence: "Llevaba un sombrero de paja en la playa." },
@@ -351,10 +247,10 @@
 
     function setLanguageFilter(lang) {
       currentFilter = lang;
-      document.getElementById('langFilterAll').className = lang === 'all' ? 'px-2.5 py-1.5 text-xs font-semibold rounded-lg bg-amber-500 text-slate-900 flex-1 sm:flex-none text-center' : 'px-2.5 py-1.5 text-xs font-semibold rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-200 flex-1 sm:flex-none text-center';
-      document.getElementById('langFilterPt').className = lang === 'pt' ? 'px-2 py-1.5 text-xs font-semibold rounded-lg bg-amber-500 text-slate-900 flex-1 sm:flex-none text-center whitespace-nowrap' : 'px-2 py-1.5 text-xs font-semibold rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-200 flex-1 sm:flex-none text-center whitespace-nowrap';
-      document.getElementById('langFilterEn').className = lang === 'en' ? 'px-2 py-1.5 text-xs font-semibold rounded-lg bg-amber-500 text-slate-900 flex-1 sm:flex-none text-center whitespace-nowrap' : 'px-2 py-1.5 text-xs font-semibold rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-200 flex-1 sm:flex-none text-center whitespace-nowrap';
-      document.getElementById('langFilterEs').className = lang === 'es' ? 'px-2 py-1.5 text-xs font-semibold rounded-lg bg-amber-500 text-slate-900 flex-1 sm:flex-none text-center whitespace-nowrap' : 'px-2 py-1.5 text-xs font-semibold rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-200 flex-1 sm:flex-none text-center whitespace-nowrap';
+      document.getElementById('langFilterAll').className = lang === 'all' ? 'px-2 py-1 text-[10px] font-bold rounded bg-amber-500 text-slate-900 flex-1 text-center' : 'px-2 py-1 text-[10px] font-bold rounded bg-slate-700 hover:bg-slate-600 text-slate-300 flex-1 text-center';
+      document.getElementById('langFilterPt').className = lang === 'pt' ? 'px-2 py-1 text-[10px] font-bold rounded bg-amber-500 text-slate-900 flex-1 text-center' : 'px-2 py-1 text-[10px] font-bold rounded bg-slate-700 hover:bg-slate-600 text-slate-300 flex-1 text-center';
+      document.getElementById('langFilterEn').className = lang === 'en' ? 'px-2 py-1 text-[10px] font-bold rounded bg-amber-500 text-slate-900 flex-1 text-center' : 'px-2 py-1 text-[10px] font-bold rounded bg-slate-700 hover:bg-slate-600 text-slate-300 flex-1 text-center';
+      document.getElementById('langFilterEs').className = lang === 'es' ? 'px-2 py-1 text-[10px] font-bold rounded bg-amber-500 text-slate-900 flex-1 text-center' : 'px-2 py-1 text-[10px] font-bold rounded bg-slate-700 hover:bg-slate-600 text-slate-300 flex-1 text-center';
       initGame();
     }
 
@@ -370,13 +266,13 @@
       const badge = document.getElementById('wordLanguageBadge');
       if (currentItem.lang === 'pt') {
         badge.textContent = '🇧🇷 PORTUGUÊS';
-        badge.className = 'px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-bold tracking-wider uppercase bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
+        badge.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
       } else if (currentItem.lang === 'en') {
         badge.textContent = '🇬🇧 INGLÊS';
-        badge.className = 'px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-bold tracking-wider uppercase bg-blue-500/20 text-blue-400 border border-blue-500/30';
+        badge.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-blue-500/20 text-blue-400 border border-blue-500/30';
       } else {
         badge.textContent = '🇪🇸 ESPANHOL';
-        badge.className = 'px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-bold tracking-wider uppercase bg-red-500/20 text-red-400 border border-red-500/30';
+        badge.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-red-500/20 text-red-400 border border-red-500/30';
       }
 
       document.getElementById('currentWordIndex').textContent = currentIndex + 1;
@@ -468,7 +364,7 @@
       const modal = document.getElementById('feedbackModal');
       const icon = document.getElementById('feedbackIcon');
       const title = document.getElementById('feedbackTitle');
-      const msg = document.getElementById('feedbackMessage');
+      msg = document.getElementById('feedbackMessage');
       const correctBox = document.getElementById('correctSpellingBox');
 
       correctBox.textContent = `${currentItem.word} ➔ ${formatSpelling(currentItem.word)}`;
@@ -477,13 +373,13 @@
         correctCount++;
         icon.innerHTML = '🎉';
         title.textContent = 'Soletração Correta!';
-        title.className = 'text-lg sm:text-xl font-bold mb-2 text-emerald-400';
-        msg.textContent = 'Excelente! Você demonstrou domínio perfeito da regra de soletração da palavra.';
+        title.className = 'text-lg font-bold mb-1 text-emerald-400';
+        msg.textContent = 'Excelente! Você demonstrou domínio perfeito da palavra.';
       } else {
         incorrectCount++;
         icon.innerHTML = '❌';
         title.textContent = 'Soletração Incorreta';
-        title.className = 'text-lg sm:text-xl font-bold mb-2 text-rose-400';
+        title.className = 'text-lg font-bold mb-1 text-rose-400';
         msg.textContent = `A banca informou que a resposta exata era:`;
       }
 
