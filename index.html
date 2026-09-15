@@ -1,334 +1,331 @@
+<?php
+session_start();
+
+// Configuração do Banco de Dados SQLite
+try {
+    $db = new PDO('sqlite:apicultura_site.db');
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+    $db->exec("CREATE TABLE IF NOT EXISTS recados (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        titulo TEXT NOT NULL,
+        conteudo TEXT NOT NULL,
+        arquivo TEXT,
+        data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP
+    )");
+} catch (PDOException $e) {
+    die("Erro no banco de dados: " . $e->getMessage());
+}
+
+$senha_mestra = "mel2026";
+$erro_login = false;
+
+// Processar Login do Professor Laurielson
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['acao']) && $_POST['acao'] === 'login') {
+    if (trim($_POST['senha']) === $senha_mestra) {
+        $_SESSION['admin_apicultura'] = true;
+        header("Location: " . $_SERVER['PHP_SELF'] . "#painel-professor");
+        exit;
+    } else {
+        $erro_login = true;
+    }
+}
+
+// Processar Logout
+if (isset($_GET['logout'])) {
+    unset($_SESSION['admin_apicultura']);
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit;
+}
+
+// Excluir Recado (Somente Professor)
+if (isset($_GET['excluir']) && isset($_SESSION['admin_apicultura'])) {
+    $id = (int)$_GET['excluir'];
+    $stmt = $db->prepare("SELECT arquivo FROM recados WHERE id = ?");
+    $stmt->execute([$id]);
+    $recado = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if ($recado && $recado['arquivo'] && file_exists("uploads/" . $recado['arquivo'])) {
+        unlink("uploads/" . $recado['arquivo']);
+    }
+    
+    $stmt = $db->prepare("DELETE FROM recados WHERE id = ?");
+    $stmt->execute([$id]);
+    header("Location: " . $_SERVER['PHP_SELF'] . "#mural");
+    exit;
+}
+
+// Publicar Novo Recado (Somente Professor)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['acao']) && $_POST['acao'] === 'salvar' && isset($_SESSION['admin_apicultura'])) {
+    $titulo = trim($_POST['titulo']);
+    $conteudo = trim($_POST['conteudo']);
+    $nome_arquivo = null;
+
+    if (!empty($_FILES['arquivo']['name'])) {
+        $diretorio = "uploads/";
+        if (!is_dir($diretorio)) {
+            mkdir($diretorio, 0755, true);
+        }
+        $ext = strtolower(pathinfo($_FILES['arquivo']['name'], PATHINFO_EXTENSION));
+        $nome_arquivo = time() . "_" . uniqid() . "." . $ext;
+        move_uploaded_file($_FILES['arquivo']['tmp_name'], $diretorio . $nome_arquivo);
+    }
+
+    if ($titulo && $conteudo) {
+        $stmt = $db->prepare("INSERT INTO recados (titulo, conteudo, arquivo) VALUES (?, ?, ?)");
+        $stmt->execute([$titulo, $conteudo, $nome_arquivo]);
+        header("Location: " . $_SERVER['PHP_SELF'] . "#mural");
+        exit;
+    }
+}
+
+$recados = $db->query("SELECT * FROM recados ORDER BY data_criacao DESC")->fetchAll(PDO::FETCH_ASSOC);
+?>
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet"><meta charset="UTF-8">
-<title>Pablo Júnio | Dev</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laurielson Alencar | Apicultura & Pesquisa</title>
+    <style>
+        :root {
+            --primary: #f59e0b;
+            --primary-hover: #d97706;
+            --bg: #fffbeb;
+            --surface: #ffffff;
+            --text-dark: #1f2937;
+            --text-muted: #4b5563;
+            --accent: #78350f;
+            --border: #fef3c7;
+        }
 
-<style>
-  /* CONFIGURAÇÕES GERAIS */
-  body {
-  overflow-x: hidden; /* Evita que a NNluz crie barra de rolagem */
-  background: radial-gradient(circle at center, #0a0a0a 0%, #000 100%);
-}
+        * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
+        html { scroll-behavior: smooth; }
+        body { margin: 0; background-color: var(--bg); color: var(--text-dark); line-height: 1.6; word-wrap: break-word; }
 
-.luz-neon {
-  position: fixed;
-  width: 800px; /* Maior para cobrir mais o fundo */
-  height: 800px;
-  /* Cor mais forte e rastro mais longo */
-  background: radial-gradient(circle, rgba(3, 223, 80, 0.4), transparent 75%); 
-  filter: blur(100px);
-  z-index: -1;
-  top: -300px;
-  left: -300px;
-  animation: moverLuz 10s infinite alternate ease-in-out;
-}
+        /* Barra Administrativa */
+        .admin-bar {
+            background: #111827; color: #fff; padding: 0.6rem 1rem;
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem; position: sticky; top: 0; z-index: 200; flex-wrap: wrap; gap: 0.5rem;
+        }
+        .admin-bar a { color: #f59e0b; text-decoration: none; font-weight: 600; }
 
-@keyframes moverLuz {
-  0% { transform: translate(0, 0); }
-  100% { transform: translate(70vw, 70vh); }
-}
+        /* Navegação Responsiva */
+        nav {
+            position: sticky; top: <?= isset($_SESSION['admin_apicultura']) ? '38px' : '0' ?>; 
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px);
+            border-bottom: 1px solid #f3f4f6; z-index: 100; padding: 0.8rem 0;
+        }
+        .nav-container {
+            max-width: 900px; margin: 0 auto; padding: 0 1rem;
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem;
+        }
+        .logo { font-weight: 800; color: var(--accent); text-decoration: none; font-size: 1.15rem; display: flex; align-items: center; gap: 0.5rem; }
+        .nav-links { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .nav-links a { text-decoration: none; color: var(--text-dark); font-size: 0.9rem; font-weight: 500; padding: 0.2rem 0; }
+        .nav-links a:hover { color: var(--primary-hover); }
 
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    scroll-behavior: smooth; /* Faz o deslize ser suave */
-  }
+        /* Hero Adaptável */
+        .hero {
+            position: relative; text-align: center; padding: 4rem 1rem 3rem 1rem; color: #ffffff;
+            background: linear-gradient(180deg, rgba(120, 53, 15, 0.88) 0%, rgba(245, 158, 11, 0.8) 100%), 
+                        url('https://images.unsplash.com/photo-1587049352847-4a222e784d38?auto=format&fit=crop&w=1350&q=80') center/cover no-repeat;
+        }
+        .hero-badge { background: rgba(255, 255, 255, 0.2); color: #fff; padding: 0.3rem 0.8rem; border-radius: 99px; font-size: 0.8rem; font-weight: 600; display: inline-block; margin-bottom: 0.8rem; backdrop-filter: blur(4px); }
+        .hero h1 { font-size: 2.2rem; margin: 0.4rem 0; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        .hero p { font-size: 1rem; max-width: 650px; margin: 0.5rem auto 0 auto; opacity: 0.95; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
 
-  body {
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-    background-color: #000; /* Fundo Preto */
-    color: #eee;
-    display: flex;
-  }
+        /* Estrutura Central */
+        .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem 3rem 1rem; }
+        section { margin-bottom: 2.5rem; }
+        .section-title { font-size: 1.25rem; color: var(--accent); margin-bottom: 1rem; border-bottom: 2px solid var(--border); padding-bottom: 0.4rem; }
+        
+        .card { background: var(--surface); border-radius: 12px; padding: 1.4rem; border: 1px solid #f3f4f6; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
 
-  /* MENU LATERAL FIXO */
-  .sidebar {
-    width: 250px;
-    height: 100vh;
-    background-color: #080808;
-    border-right: 2px solid #00ff7f; /* Linha Verde Neon */
-    position: fixed;
-    padding-top: 40px;
-  }
+        .grid-projetos { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
+        .projeto-item { background: var(--surface); border-radius: 10px; padding: 1.2rem; border: 1px solid #f3f4f6; }
+        .projeto-item h3 { margin-top: 0; color: var(--primary-hover); font-size: 1.05rem; }
 
-  .sidebar h2 {
-    color: #00ff7f;
-    text-align: center;
-    font-size: 1.4rem;
-    margin-bottom: 40px;
-    letter-spacing: 1px;
-  }
+        .recado-card { background: var(--surface); border-radius: 10px; padding: 1.2rem; margin-bottom: 1rem; border-left: 4px solid var(--primary); }
+        .recado-meta { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+        .media-preview { max-width: 100%; height: auto; border-radius: 8px; margin-top: 0.8rem; display: block; }
 
-  .sidebar ul {
-    list-style: none;
-  }
+        /* Botões e Inputs Amigáveis ao Toque */
+        .btn { background: var(--primary); color: white; border: none; padding: 0.75rem 1.2rem; border-radius: 8px; font-weight: 600; text-decoration: none; display: inline-block; cursor: pointer; text-align: center; width: auto; }
+        .btn:hover { background: var(--primary-hover); }
+        .btn-insta { background: #e1306c; }
+        .btn-whatsapp { background: #25d366; }
+        .btn-danger { background: #ef4444; font-size: 0.8rem; padding: 0.5rem 0.8rem; }
 
-  .sidebar ul li a {
-    display: block;
-    padding: 15px 25px;
-    color: #888;
-    text-decoration: none;
-    font-weight: 500;
-    transition: 0.3s;
-  }
+        .botoes-contato { display: flex; justify-content: center; gap: 0.8rem; margin-top: 1.2rem; flex-wrap: wrap; }
 
-  /* Efeito ao passar o mouse */
-  .sidebar ul li a:hover {
-    color: #00ff7f;
-    background-color: rgba(0, 255, 127, 0.05);
-    padding-left: 35px;
-  }
+        input[type="text"], input[type="password"], textarea { width: 100%; padding: 0.75rem; margin-top: 0.3rem; margin-bottom: 1rem; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 1rem; }
 
-  /* CONTEÚDO */
-  .main-content {
-    margin-left: 250px;
-    width: 100%;
-  }
+        .secret-trigger { cursor: pointer; opacity: 0.25; user-select: none; font-size: 1.2rem; padding: 0.4rem; }
+        .secret-trigger:hover { opacity: 1; }
 
-  section {
-    min-height: 100vh; /* Cada parte ocupa a tela toda */
-    padding: 100px 60px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  h1, h2 {
-    color: #00ff7f;
-    margin-bottom: 20px;
-    font-size: 2.5rem;
-  }
-
-  p {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    max-width: 700px;
-  }
-
-  /* Estilo para a lista de habilidades */
-  .tags {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-  }
-
-  .tag {
-    border: 1px solid #00ff7f;
-    padding: 5px 15px;
-    border-radius: 4px;
-    color: #00ff7f;
-    font-size: 0.9rem;
-  }
-
-  /* FOTO FLUTUANTE */
-  .minha-foto {
-    position: fixed;
-    right: 40px;
-    bottom: 40px;
-    width: 180px;
-    border: 2px solid #03df50;
-    border-radius: 12px;
-    box-shadow: 0 0 15px rgba(0, 255, 127, 0.2);
-    animation: flutuar 3s infinite alternate ease-in-out;
-}
-
-/* O QUE A ANIMAÇÃO FAZ: flutua 15px para cima e brilha mais forte */
-@keyframes flutuar {
-    from {
-        transform: translateY(0);
-        box-shadow: 0 0 15px rgba(0, 255, 127, 0.2);
-    }
-    to {
-        transform: translateY(-15px);
-        box-shadow: 0 0 30px rgba(3, 223, 80, 0.6);
-    }
-}
-/* Cole este bloco no final do seu CSS atual */
-    .skills-grid {
-      display: flex;
-      gap: 30px;
-      flex-wrap: wrap;
-      margin-top: 20px;
-    }
-
-    .skill-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .skill-item i {
-      font-size: 50px;
-      transition: 0.3s;
-    }
-
-    .skill-item:hover i {
-      transform: scale(1.2);
-      filter: drop-shadow(0 0 10px #00ff7f);
-    }
-
-    .skill-item span {
-      font-size: 0.9rem;
-      color: #888;
-    }
-        footer { text-align: center; padding: 20px; color: #888; font-size: 0.8rem; }
-        .pablo { color: #03df50; font-weight: bold; }
-
-    .habilidades-item i {
-        font-size: 80px !important; /* Aumenta a logo */
-        display: block;
-        margin-bottom: 10px;
-        color: #03df50; /* Verde neon para combinar */
-    }
-
-    .habilidades-grid {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 30px;
-        justify-content: left;
-    }
-
-   aside {
-    width: 250px;
-    height: 100vh;
-    background: #0a0a0a;
-    position: fixed;
-    padding: 30px 15px;
-    
-    /* DETALHE 1: Borda neon principal */
-    border-right: 3px solid #03df50;
-    box-shadow: 5px 0 20px rgba(3, 223, 80, 0.3);
-    
-    /* DETALHE 2: O preenchimento (Grid de fundo visível) */
-    background-image: 
-        radial-gradient(rgba(3, 223, 80, 0.15) 1px, transparent 1px);
-    background-size: 25px 25px; /* Isso cria vários pontinhos verdes no fundo */
-    
-    /* DETALHE 3: Linha de brilho no topo */
-    border-top: 1px solid rgba(3, 223, 80, 0.2);
-    
-    display: flex;
-    flex-direction: column;
-    z-index: 100;
-}
-
-/* Detalhe extra: Uma barrinha decorativa antes de cada item do menu */
-aside ul li a {
-    border-left: 2px solid transparent;
-    padding-left: 10px;
-    transition: 0.4s;
-}
-
-aside ul li a:hover {
-    border-left: 2px solid #03df50; /* A barrinha acende ao passar o mouse */
-    background: rgba(3, 223, 80, 0.1);
-    color: #fff;
-}
+        /* Ajustes Específicos para Telas Pequenas (Smartphones) */
+        @media (max-width: 600px) {
+            .nav-container { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+            .nav-links { width: 100%; justify-content: space-between; border-top: 1px solid #f3f4f6; padding-top: 0.5rem; }
+            .hero { padding: 3rem 1rem 2.5rem 1rem; }
+            .hero h1 { font-size: 1.75rem; }
+            .hero p { font-size: 0.95rem; }
+            .botoes-contato .btn { width: 100%; }
+            .container { padding: 1.5rem 0.8rem 2.5rem 0.8rem; }
+        }
     </style>
-</style>
 </head>
 <body>
-<div class="luz-neon"></div>
-  <!-- Sidebar -->
-  <nav class="sidebar">
-    <h2>PABLO MORAIS</h2>
-    <ul>
-           <li><a href="#Início"><i class="fas fa-home"></i> Início</a></li>
-           <li><a href="#Sobre"><i class="fas fa-user"></i> Sobre</a></li>
-           <li><a href="#Habilidades"><i class="fas fa-code"></i> Habilidades</a></li>
-           <li><a href="#Trabalhos"><i class="fas fa-briefcase"></i> Trabalhos</a></li>
-           <li><a href="#Serviços"><i class="fas fa-laptop-code"></i> Serviços</a></li>
-           <li><a href="#Contato"><i class="fas fa-envelope"></i> Contato</a></li>
-    </ul>
-  </nav>
 
-  <!-- Conteúdo -->
-  <div class="main-content">
-    
-    <section id="Início">
-  <h1>Olá, eu sou o <span class="highlight">Pablo!</span></h1>
-  <p class="subtitle">
-    <strong>Desenvolvedor | Acadêmico de Téc. em Informática</strong>
-  </p>
-  <br>
-  <p>
-    Estudante de Informática no <strong>Colégio Técnico de Floriano (CTF/UFPI)</strong>, 
-    especializado na arquitetura de sistemas robustos e desenvolvimento de aplicações de alto nível.
-  </p>
-  <p>
-    Foco em transformar desafios lógicos em soluções reais através de linguagens como 
-    Python e Java, com domínio avançado em bancos de dados PostgreSQL.
-  </p>
-</section>
+    <!-- BARRA DO PROFESSOR (Logado) -->
+    <?php if (isset($_SESSION['admin_apicultura'])): ?>
+        <div class="admin-bar">
+            <span>🐝 Painel de Laurielson Alencar</span>
+            <a href="?logout=1" style="color: #ef4444;">← Sair</a>
+        </div>
+    <?php endif; ?>
 
-    <section id="Sobre">
-      <h2>Sobre Mim</h2>
-      <p>Desenvolvo sistemas funcionais com foco em organização e eficiência.</p>
-       <p>Curso o 3º ano do Ensino Médio.</p>
-        <p> Atualmente moro em Floriano, Piauí.</p>
-    </section>
+    <!-- NAVEGAÇÃO -->
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <span>🐝</span> Laurielson Alencar
+            </a>
+            <div class="nav-links">
+                <a href="#sobre">Sobre</a>
+                <a href="#projetos">Atuação</a>
+                <a href="#mural">Mural</a>
+                <a href="#contato">Contato</a>
+            </div>
+        </div>
+    </nav>
 
-    <section id="Habilidades">
-  <h2>Habilidades</h2>
-  <div class="habilidades-grid">
-    <!-- Python -->
-    <div class="habilidades-item">
-      <i class="devicon-python-plain colored"></i>
-      <span>Python</span>
+    <!-- TOPO HERO COM ABELHAS E DEGRADÊ -->
+    <header class="hero">
+        <span class="hero-badge">Professor & Pesquisador em Apicultura</span>
+        <h1>Laurielson Alencar</h1>
+        <p>Projetos de ensino, extensão, pesquisas apícolas e avisos oficiais para alunos e comunidade.</p>
+    </header>
+
+    <div class="container">
+
+        <!-- PAINEL DE POSTAGEM DO PROFESSOR -->
+        <?php if (isset($_SESSION['admin_apicultura'])): ?>
+            <section id="painel-professor" style="border: 2px dashed var(--primary); padding: 1.2rem; border-radius: 12px; background: #fff; margin-bottom: 2rem;">
+                <h3 style="margin-top: 0; color: var(--accent);">📌 Nova Publicação no Mural</h3>
+                <form action="" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="acao" value="salvar">
+                    
+                    <label><strong>Título:</strong></label>
+                    <input type="text" name="titulo" placeholder="Ex: Cronograma de Aulas no Apiário" required>
+
+                    <label><strong>Conteúdo do Aviso:</strong></label>
+                    <textarea name="conteudo" rows="4" placeholder="Escreva a mensagem aqui..." required></textarea>
+
+                    <label><strong>Anexar Foto ou Documento (Opcional):</strong></label><br>
+                    <input type="file" name="arquivo" style="margin-top: 0.3rem; margin-bottom: 1rem; width: 100%;"><br>
+
+                    <button type="submit" class="btn" style="width: 100%;">Publicar no Mural Público</button>
+                </form>
+            </section>
+        <?php endif; ?>
+
+        <!-- 1. SOBRE -->
+        <section id="sobre">
+            <h2 class="section-title">Sobre o Professor</h2>
+            <div class="card">
+                <p><strong>Laurielson Alencar</strong> é professor e pesquisador dedicado ao desenvolvimento técnico e científico da apicultura. Desenvolve atividades voltadas ao manejo produtivo de colmeias, conservação de abelhas e inovação em produtos apícolas.</p>
+                <p>Este portal tem como objetivo servir de canal de comunicação direto com os alunos, divulgando materiais didáticos, resultados de estudos e avisos de aula.</p>
+            </div>
+        </section>
+
+        <!-- 2. ATUAÇÃO E PROJETOS -->
+        <section id="projetos">
+            <h2 class="section-title">Atuação & Projetos</h2>
+            <div class="grid-projetos">
+                <div class="projeto-item">
+                    <h3>🔬 Manejo & Pesquisa</h3>
+                    <p>Desenvolvimento de técnicas de nutrição e manejo integrado para o fortalecimento do apiário.</p>
+                </div>
+                <div class="projeto-item">
+                    <h3>📚 Ensino & Extensão</h3>
+                    <p>Orientação acadêmica, cursos práticos e capacitação sobre produtos da colmeia.</p>
+                </div>
+                <div class="projeto-item">
+                    <h3>🍯 Consultoria Técnica</h3>
+                    <p>Apoio técnico para produtores locais na melhoria da produção de mel e própolis.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. MURAL PÚBLICO -->
+        <section id="mural">
+            <h2 class="section-title">Mural de Avisos & Publicações</h2>
+
+            <?php if (empty($recados)): ?>
+                <div class="card"><p style="color: var(--text-muted); margin: 0;">Nenhum aviso publicado até o momento.</p></div>
+            <?php else: ?>
+                <?php foreach ($recados as $r): ?>
+                    <article class="recado-card">
+                        <h3 style="margin: 0; color: var(--accent); font-size: 1.1rem;"><?= htmlspecialchars($r['titulo']) ?></h3>
+                        <div class="recado-meta">Publicado por Laurielson Alencar em <?= date('d/m/Y \à\s H:i', strtotime($r['data_criacao'])) ?></div>
+                        <p style="margin-top: 0.5rem; margin-bottom: 0.5rem;"><?= nl2br(htmlspecialchars($r['conteudo'])) ?></p>
+
+                        <?php if ($r['arquivo']): ?>
+                            <?php 
+                            $ext = strtolower(pathinfo($r['arquivo'], PATHINFO_EXTENSION));
+                            if (in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp'])): 
+                            ?>
+                                <img src="uploads/<?= htmlspecialchars($r['arquivo']) ?>" alt="Mídia anexada" class="media-preview">
+                            <?php else: ?>
+                                <a href="uploads/<?= htmlspecialchars($r['arquivo']) ?>" target="_blank" class="btn" style="background: #e5e7eb; color: var(--text-dark); font-size: 0.85rem; margin-top: 0.5rem;">📄 Baixar Anexo</a>
+                            <?php endif; ?>
+                        <?php endif; ?>
+
+                        <?php if (isset($_SESSION['admin_apicultura'])): ?>
+                            <div style="margin-top: 0.8rem;">
+                                <a href="?excluir=<?= $r['id'] ?>" class="btn btn-danger" onclick="return confirm('Excluir este aviso?');">Excluir Aviso</a>
+                            </div>
+                        <?php endif; ?>
+                    </article>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </section>
+
+        <!-- 4. CONTATO -->
+        <section id="contato">
+            <h2 class="section-title">Contato</h2>
+            <div class="card" style="text-align: center;">
+                <p>Para dúvidas sobre disciplinas, projetos ou consultoria apícola, entre em contato:</p>
+                <div class="botoes-contato">
+                    <a href="https://www.instagram.com/laurielsonalencar?utm_source=ig_web_button_share_sheet&stkn=ZDNlZDc0MzIxNw==" target="_blank" class="btn btn-insta">📷 Instagram</a>
+                    <a href="https://wa.me/" target="_blank" class="btn btn-whatsapp">💬 WhatsApp Direto</a>
+                </div>
+            </div>
+        </section>
+
     </div>
-    <!-- Java -->
-    <div class="habilidades-item">
-      <i class="devicon-java-plain colored"></i>
-      <span>Java</span>
-    </div>
-    <!-- PostgreSQL -->
-    <div class="habilidades-item">
-      <i class="devicon-postgresql-plain colored"></i>
-      <span>PostgreSQL</span>
-    </div>
-    <!-- HTML5 -->
-    <div class="habilidades-item">
-      <i class="devicon-html5-plain colored"></i>
-      <span>HTML5</span>
-    </div>
-  
-  </div>
-</section>
 
-    <section id="Trabalhos">
-     <h2>Projetos de Impacto</h2>
-      <div class="card">
-        <h3>Sistema de Gestão de Fluxo Institucional</h3>
-        <p>Desenvolvimento de um motor de reservas em tempo real para laboratórios acadêmicos, integrando bancos de dados relacionais.</p>
-      </div>
-    </section>
-
-    <section id="Serviços">
-     <h2>Especialidades</h2>
-      <div class="card-grid">
-        <div class="card"><h3>Engenharia de Software</h3><p>Criação de sistemas escaláveis e robustos para empresas de tecnologia.</p></div>
-        <div class="card"><h3>Consultoria de Dados</h3><p>Modelagem e administração de bancos de dados PostgreSQL de alta disponibilidade.</p></div>
-        <div class="card"><h3>Cloud Computing</h3><p>Implantação e manutenção de servidores web de última geração.</p></div>
-      </div>
-    </section>
-
-    <section id="Contato">
-      <h2>Contato</h2>
-    <p>Email: <span class="highlight">pablojunio014@gmail.com</span></p>
-    <p> WhatsApp: (89) 99464-5331 </p>
-    <p>Instagram: @pablojunioc </p>
-    <p> X: @pabl0morais</p> 
-    </section>
-
-  </div>
-
-  <!-- Imagem flutuante -->
-  <img src="WhatsApp Image 2026-04-29 at 15.38.23.jpeg" alt="Pablo Júnio" class="minha-foto">
-    <footer>
-        <p>&copy; 2026 <span class="pablo">Pablo Morais</span>. Todos os direitos reservados.</p>
+    <!-- RODAPÉ PÚBLICO -->
+    <footer style="text-align: center; padding: 2rem 1rem; background: #fff; border-top: 1px solid #f3f4f6; color: var(--text-muted); font-size: 0.85rem;">
+        <p>&copy; <?= date('Y') ?> Laurielson Alencar. Todos os direitos reservados.</p>
+        
+        <?php if (!isset($_SESSION['admin_apicultura'])): ?>
+            <details style="display: inline-block; margin-top: 0.5rem;">
+                <summary class="secret-trigger" title="Acesso do Professor">🐝</summary>
+                <form action="" method="POST" style="margin-top: 0.8rem; display: flex; gap: 0.4rem; justify-content: center; flex-wrap: wrap;">
+                    <input type="hidden" name="acao" value="login">
+                    <input type="password" name="senha" placeholder="Senha do Professor" required style="width: 150px; padding: 0.4rem; font-size: 0.8rem; margin: 0;">
+                    <button type="submit" class="btn" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">Entrar</button>
+                </form>
+                <?php if ($erro_login): ?>
+                    <p style="color: #ef4444; font-size: 0.75rem; margin-top: 0.4rem;">Senha incorreta! Tente novamente.</p>
+                <?php endif; ?>
+            </details>
+        <?php endif; ?>
     </footer>
+
 </body>
 </html>
